@@ -73,6 +73,9 @@ function App() {
       return {
         ...prevState,
         selectedProjectId: undefined,
+        tasks : prevState.tasks.filter(
+          (task) => task.projectId !==  prevState.selectedProjectId
+        ),
         projects: prevState.projects.filter(
           (project) => project.id !== prevState.selectedProjectId
         ),
@@ -92,15 +95,20 @@ function App() {
   const selectedProject = projectsState.projects.find(
     (project) => project.id === projectsState.selectedProjectId
   );
-  // const currentTasks = projectsState.tasks.find(
-  //   (task) => task.projectId === selectedProject.id
-  // );
+
+  let currentTasks;
+  
+  if(selectedProject){
+    currentTasks = projectsState.tasks.filter(
+      (task) => task.projectId === selectedProject.id
+    );
+  }
 
   let content = (
     <SelectedProject
       project={selectedProject}
       onDelete={handleDeleteProject}
-      tasks={projectsState.tasks}
+      tasks={currentTasks}
       onAddTask={handleAddTask}
       onDeleteTask={handleDeleteTask}
     />
